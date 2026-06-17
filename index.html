@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Noche de San Juan — El Ritual de la Meiga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #0d1b2e;
+    --night-mid: #15243a;
+    --panel: #1a2f47;
+    --panel-light: #213a56;
+    --ember: #e8580c;
+    --ember-soft: #c8480a;
+    --candle: #f4c95d;
+    --bone: #f4f0e6;
+    --bone-dim: #c9c2b2;
+    --herb: #3a5a40;
+    --herb-light: #4f7556;
+    --line: rgba(244, 240, 230, 0.12);
+    --shadow-deep: rgba(0,0,0,0.55);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: var(--bone);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Textura de fondo: estrellas + viñeta */
+  .sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(232,88,12,0.10), transparent 60%),
+      radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 15%, #fff, transparent),
+      radial-gradient(1px 1px at 25% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 80%, #fff, transparent),
+      radial-gradient(1px 1px at 90% 45%, #fff, transparent),
+      radial-gradient(1px 1px at 40% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 70% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 15% 85%, #fff, transparent),
+      var(--night);
+    opacity: 0.9;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--candle);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 12px 3px var(--ember);
+    animation: flicker 2.4s ease-in-out infinite;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(42px, 8vw, 76px);
+    line-height: 1.02;
+    color: var(--bone);
+    max-width: 11ch;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--ember);
+    font-weight: 500;
+  }
+
+  .hero-sub {
+    margin-top: 28px;
+    font-size: 18px;
+    color: var(--bone-dim);
+    max-width: 46ch;
+  }
+
+  /* Reloj de cuenta atrás hasta el amanecer — elemento firma */
+  .dawn-tracker {
+    margin-top: 56px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .dawn-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--bone-dim);
+    margin-bottom: 10px;
+  }
+
+  .dawn-label span:last-child { color: var(--candle); }
+
+  .dawn-bar {
+    height: 10px;
+    background: var(--panel);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--line);
+  }
+
+  .dawn-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--ember-soft), var(--ember), var(--candle));
+    transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 100px;
+  }
+
+  .dawn-marks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--bone-dim);
+    opacity: 0.6;
+  }
+
+  /* ===== TIMELINE / SECTIONS ===== */
+  .timeline {
+    position: relative;
+    padding: 40px 0 120px;
+  }
+
+  .trial {
+    position: relative;
+    padding: 48px 0 48px 56px;
+    border-left: 2px solid var(--line);
+    margin-left: 18px;
+    opacity: 0.42;
+    filter: saturate(0.5);
+    transition: opacity 0.6s ease, filter 0.6s ease;
+  }
+
+  .trial.active {
+    opacity: 1;
+    filter: saturate(1);
+  }
+
+  .trial.solved {
+    opacity: 1;
+    filter: saturate(1);
+    border-left-color: var(--herb-light);
+  }
+
+  .trial:last-child { border-left-color: transparent; }
+
+  .trial-marker {
+    position: absolute;
+    left: -19px;
+    top: 50px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--bone-dim);
+    transition: all 0.5s ease;
+  }
+
+  .trial.active .trial-marker {
+    border-color: var(--ember);
+    color: var(--candle);
+    box-shadow: 0 0 0 6px rgba(232,88,12,0.12);
+  }
+
+  .trial.solved .trial-marker {
+    background: var(--herb);
+    border-color: var(--herb-light);
+    color: var(--bone);
+  }
+
+  .trial.solved .trial-marker::after { content: '✓'; }
+
+  .trial-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 10px;
+  }
+
+  .trial h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 600;
+    color: var(--bone);
+    margin-bottom: 6px;
+  }
+
+  .trial-myth {
+    font-style: italic;
+    color: var(--bone-dim);
+    font-size: 15.5px;
+    margin-bottom: 24px;
+    max-width: 52ch;
+    border-left: 2px solid var(--herb-light);
+    padding-left: 14px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    margin-top: 8px;
+  }
+
+  .panel-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--candle);
+    margin-bottom: 14px;
+  }
+
+  .panel p {
+    color: var(--bone);
+    font-size: 15.5px;
+    margin-bottom: 16px;
+  }
+
+  .panel p:last-of-type { margin-bottom: 0; }
+
+  .clue-box {
+    background: var(--night-mid);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 18px 0;
+    font-size: 14.5px;
+    color: var(--bone-dim);
+  }
+
+  .clue-box strong { color: var(--candle); font-weight: 600; }
+
+  /* Inputs de cada prueba */
+  .answer-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .text-input, .select-input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--night-mid);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: var(--bone);
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+  }
+
+  .text-input::placeholder { color: var(--bone-dim); opacity: 0.5; }
+
+  .text-input:focus, .select-input:focus {
+    outline: none;
+    border-color: var(--ember);
+    box-shadow: 0 0 0 3px rgba(232,88,12,0.15);
+  }
+
+  .herb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .herb-option {
+    background: var(--night-mid);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: var(--bone-dim);
+    user-select: none;
+  }
+
+  .herb-option:hover {
+    border-color: var(--herb-light);
+    color: var(--bone);
+  }
+
+  .herb-option.picked {
+    background: rgba(58,90,64,0.25);
+    border-color: var(--herb-light);
+    color: var(--bone);
+  }
+
+  .herb-option .herb-emoji {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .dial-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 20px 0;
+  }
+
+  .dial-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--night-mid);
+    border: 1px solid var(--line);
+    color: var(--bone);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .dial-btn:hover { border-color: var(--ember); color: var(--ember); }
+
+  .dial-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--candle);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .submit-btn {
+    background: var(--ember);
+    color: var(--bone);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 26px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .submit-btn:hover { background: var(--ember-soft); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .feedback {
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13.5px;
+    min-height: 18px;
+  }
+
+  .feedback.error { color: #e8580c; }
+  .feedback.success { color: #7fb685; }
+
+  .reward {
+    margin-top: 20px;
+    background: rgba(244,201,93,0.08);
+    border: 1px solid rgba(244,201,93,0.3);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--candle);
+    font-size: 14.5px;
+    display: none;
+  }
+
+  .reward.show { display: block; animation: revealIn 0.5s ease; }
+
+  @keyframes revealIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .locked-msg {
+    color: var(--bone-dim);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* ===== FINALE ===== */
+  .finale {
+    text-align: center;
+    padding: 80px 0 100px;
+    border-left: none;
+    margin-left: 0;
+  }
+
+  .finale h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 6vw, 48px);
+    color: var(--bone);
+  }
+
+  .finale p { color: var(--bone-dim); max-width: 48ch; margin: 16px auto 0; }
+
+  .finale-art {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+
+  /* Print sheet helper */
+  .footer-note {
+    text-align: center;
+    padding: 40px 0 60px;
+    color: var(--bone-dim);
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  @media (max-width: 540px) {
+    .trial { padding-left: 36px; margin-left: 8px; }
+    .trial-marker { left: -17px; width: 30px; height: 30px; font-size: 12px; }
+    .panel { padding: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sky"></div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">23 de junio · medianoche</div>
+    <h1>El ritual de<br><em>San Juan</em></h1>
+    <p class="hero-sub">Una meiga quedó atrapada en esta noche hace siglos. Solo el fuego, el agua, las hierbas y el mar —completados en su orden antiguo— pueden romper el hechizo antes de que salga el sol.</p>
+
+    <div class="dawn-tracker">
+      <div class="dawn-label">
+        <span>Medianoche</span>
+        <span id="dawn-status">0 de 4 ritos completados</span>
+      </div>
+      <div class="dawn-bar">
+        <div class="dawn-fill" id="dawn-fill"></div>
+      </div>
+      <div class="dawn-marks">
+        <span>🌙</span><span>🌿</span><span>💧</span><span>🔥</span><span>🌊</span><span>☀️</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+
+    <!-- PRUEBA 1 -->
+    <div class="trial active" id="trial-1">
+      <div class="trial-marker">1</div>
+      <div class="trial-time">Primer rito</div>
+      <h2>Las hierbas de San Juan</h2>
+      <p class="trial-myth">"Solo en esta noche las hierbas del campo guardan su poder. Quien sepa elegirlas, tendrá la llave del agua."</p>
+
+      <div class="panel">
+        <div class="panel-label">El grimorio dice</div>
+        <p>En la mesa hay varias hierbas y flores. El grimorio antiguo describe <strong>tres</strong> de ellas con acertijos. Encuéntralas entre las demás y selecciónalas en orden.</p>
+
+        <div class="clue-box">
+          <strong>I.</strong> "Crezco junto al agua y mi nombre recuerda a un rey que nunca existió."<br>
+          <strong>II.</strong> "Me llevan los enamorados, pero mi olor amargo cura más que el corazón."<br>
+          <strong>III.</strong> "Mi flor se cierra de noche, como quien guarda un secreto hasta el alba."
+        </div>
+
+        <div class="herb-grid" id="herb-grid">
+          <div class="herb-option" data-herb="ruda"><span class="herb-emoji">🌿</span>Ruda</div>
+          <div class="herb-option" data-herb="romero"><span class="herb-emoji">🌱</span>Romero</div>
+          <div class="herb-option" data-herb="helecho"><span class="herb-emoji">🍃</span>Helecho real</div>
+          <div class="herb-option" data-herb="lavanda"><span class="herb-emoji">💜</span>Lavanda</div>
+          <div class="herb-option" data-herb="rosa"><span class="herb-emoji">🌹</span>Rosa de San Juan</div>
+          <div class="herb-option" data-herb="manzanilla"><span class="herb-emoji">🌼</span>Manzanilla</div>
+        </div>
+
+        <div class="answer-row">
+          <button class="submit-btn" onclick="checkHerbs()">Comprobar ramo</button>
+        </div>
+        <div class="feedback" id="feedback-1"></div>
+        <div class="reward" id="reward-1">
+          🌿 <strong>Ramo correcto.</strong> Al atarlo con el cordel, una etiqueta escondida en el tallo central muestra un símbolo: <strong>una luna y tres gotas</strong>. Guárdalo — lo necesitarás para preparar el agua.
+        </div>
+      </div>
+    </div>
+
+    <!-- PRUEBA 2 -->
+    <div class="trial" id="trial-2">
+      <div class="trial-marker">2</div>
+      <div class="trial-time">Segundo rito</div>
+      <h2>El agua de las flores</h2>
+      <p class="trial-myth">"Lava tu rostro con el agua que reposó bajo las estrellas, y el rocío te mostrará lo que está oculto."</p>
+
+      <div class="panel">
+        <div class="panel-label">El grimorio dice</div>
+        <p>Sumerge el ramo en el cuenco de agua, como marca la tradición. En el fondo del cuenco hay un papel encerado: al mojarse, aparecen unas palabras que antes eran invisibles.</p>
+
+        <div class="clue-box">
+          Lee con atención lo que el agua revela en el papel. Escribe la <strong>palabra clave</strong> que aparece subrayada.
+        </div>
+
+        <div class="answer-row">
+          <input type="text" class="text-input" id="answer-2" placeholder="palabra revelada por el agua">
+          <button class="submit-btn" onclick="checkWater()">Comprobar</button>
+        </div>
+        <div class="feedback" id="feedback-2"></div>
+        <div class="reward" id="reward-2">
+          💧 <strong>El agua habla.</strong> Bajo la palabra, en tinta más tenue, hay un número: <strong>7</strong>. Es el número de saltos que pide la hoguera.
+        </div>
+      </div>
+    </div>
+
+    <!-- PRUEBA 3 -->
+    <div class="trial" id="trial-3">
+      <div class="trial-marker">3</div>
+      <div class="trial-time">Tercer rito</div>
+      <h2>Saltar la hoguera</h2>
+      <p class="trial-myth">"Salta el fuego un número impar de veces y el año te perdonará sus males. Salta de más o de menos, y el fuego no perdona."</p>
+
+      <div class="panel">
+        <div class="panel-label">El grimorio dice</div>
+        <p>El número que reveló el agua indica cuántas veces hay que "saltar" la hoguera de papel dispuesta en la sala (o pulsar el contador de abajo). Ajusta la cuenta al número correcto.</p>
+
+        <div class="clue-box">
+          Pista adicional impresa junto a la hoguera: <strong>"Ni la edad de un niño, ni la de un anciano: la de quien ya sabe lo que quiere."</strong> (Confirma que el número de la prueba 2 es impar y razonable para un rito — entre 3 y 9.)
+        </div>
+
+        <div class="dial-row">
+          <button class="dial-btn" onclick="changeDial(-1)">−</button>
+          <div class="dial-display" id="dial-value">0</div>
+          <button class="dial-btn" onclick="changeDial(1)">+</button>
+        </div>
+
+        <div class="answer-row">
+          <button class="submit-btn" onclick="checkFire()">Confirmar saltos</button>
+        </div>
+        <div class="feedback" id="feedback-3"></div>
+        <div class="reward" id="reward-3">
+          🔥 <strong>El fuego arde con fuerza.</strong> Las cenizas, al enfriarse, forman una silueta sobre el cartón: parece una <strong>caracola</strong>. El mar te espera.
+        </div>
+      </div>
+    </div>
+
+    <!-- PRUEBA 4 -->
+    <div class="trial" id="trial-4">
+      <div class="trial-marker">4</div>
+      <div class="trial-time">Último rito, antes del alba</div>
+      <h2>Las olas de medianoche</h2>
+      <p class="trial-myth">"Quien moje los pies en las doce olas antes de que el sol despierte, llevará la suerte del mar todo el año."</p>
+
+      <div class="panel">
+        <div class="panel-label">El grimorio dice</div>
+        <p>La silueta de las cenizas, la palabra del agua y el número del fuego son las tres llaves del último candado: el cofre de la meiga. Combínalas en el orden de los ritos para liberarla.</p>
+
+        <div class="clue-box">
+          Formato de la clave: <strong>[inicial de la palabra revelada] + [número de saltos] + [primera letra de la silueta de cenizas]</strong>.<br>
+          Ejemplo de formato (no es la solución): A7C
+        </div>
+
+        <div class="answer-row">
+          <input type="text" class="text-input" id="answer-4" placeholder="clave del cofre">
+          <button class="submit-btn" onclick="checkFinal()">Abrir el cofre</button>
+        </div>
+        <div class="feedback" id="feedback-4"></div>
+        <div class="reward" id="reward-4">
+          🌊 La clave gira en el candado. El cofre se abre.
+        </div>
+      </div>
+    </div>
+
+    <!-- FINALE -->
+    <div class="trial finale" id="finale" style="display:none;">
+      <div class="finale-art">☀️🕯️</div>
+      <h2>El alba llega y el hechizo se rompe</h2>
+      <p>Los cuatro ritos están completos. La meiga libera su último secreto: el contenido del cofre. Que la suerte de San Juan os acompañe todo el año.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer-note">San Juan · ritual nocturno · escape room</div>
+
+<script>
+  let solvedCount = 0;
+  const totalTrials = 4;
+
+  function updateDawn() {
+    const fill = document.getElementById('dawn-fill');
+    const status = document.getElementById('dawn-status');
+    const pct = (solvedCount / totalTrials) * 100;
+    fill.style.width = pct + '%';
+    status.textContent = solvedCount + ' de 4 ritos completados';
+    if (solvedCount === totalTrials) {
+      document.getElementById('finale').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('finale').scrollIntoView({behavior: 'smooth'});
+      }, 400);
+    }
+  }
+
+  function activateNext(n) {
+    const next = document.getElementById('trial-' + n);
+    if (next) next.classList.add('active');
+  }
+
+  function markSolved(n) {
+    document.getElementById('trial-' + n).classList.remove('active');
+    document.getElementById('trial-' + n).classList.add('solved');
+    solvedCount++;
+    updateDawn();
+    activateNext(n + 1);
+  }
+
+  // ---- PRUEBA 1: Hierbas ----
+  // Solución: ruda (II - olor amargo), helecho (III - flor nocturna/secreto), rosa (I - "rey que nunca existió" = San Juan no fue rey, juego de palabras con "rosa de San Juan")
+  const correctHerbs = ['rosa', 'ruda', 'helecho'];
+  let pickedHerbs = [];
+
+  document.querySelectorAll('.herb-option').forEach(el => {
+    el.addEventListener('click', () => {
+      const herb = el.dataset.herb;
+      if (el.classList.contains('picked')) {
+        el.classList.remove('picked');
+        pickedHerbs = pickedHerbs.filter(h => h !== herb);
+      } else {
+        el.classList.add('picked');
+        pickedHerbs.push(herb);
+      }
+    });
+  });
+
+  function checkHerbs() {
+    const fb = document.getElementById('feedback-1');
+    const sameSet = pickedHerbs.length === correctHerbs.length &&
+      correctHerbs.every(h => pickedHerbs.includes(h));
+    if (sameSet) {
+      fb.textContent = '✓ El ramo está completo.';
+      fb.className = 'feedback success';
+      document.getElementById('reward-1').classList.add('show');
+      markSolved(1);
+    } else {
+      fb.textContent = '✗ Algo falta o sobra en el ramo. Revisa los tres acertijos.';
+      fb.className = 'feedback error';
+    }
+  }
+
+  // ---- PRUEBA 2: Agua / palabra revelada ----
+  const correctWord = 'amanecer';
+
+  function checkWater() {
+    const val = document.getElementById('answer-2').value.trim().toLowerCase();
+    const fb = document.getElementById('feedback-2');
+    if (val === correctWord) {
+      fb.textContent = '✓ El agua confirma la palabra.';
+      fb.className = 'feedback success';
+      document.getElementById('reward-2').classList.add('show');
+      markSolved(2);
+    } else {
+      fb.textContent = '✗ Esa no es la palabra que el agua reveló.';
+      fb.className = 'feedback error';
+    }
+  }
+
+  // ---- PRUEBA 3: Hoguera / número de saltos ----
+  let dialValue = 0;
+  const correctJumps = 7;
+
+  function changeDial(delta) {
+    dialValue = Math.max(0, Math.min(9, dialValue + delta));
+    document.getElementById('dial-value').textContent = dialValue;
+  }
+
+  function checkFire() {
+    const fb = document.getElementById('feedback-3');
+    if (dialValue === correctJumps) {
+      fb.textContent = '✓ El fuego acepta la ofrenda.';
+      fb.className = 'feedback success';
+      document.getElementById('reward-3').classList.add('show');
+      markSolved(3);
+    } else {
+      fb.textContent = '✗ Ese número no es el que pide el rito.';
+      fb.className = 'feedback error';
+    }
+  }
+
+  // ---- PRUEBA 4: Clave final ----
+  // Palabra "amanecer" -> inicial A; saltos 7; silueta "caracola" -> inicial C
+  const correctFinal = 'a7c';
+
+  function checkFinal() {
+    const val = document.getElementById('answer-4').value.trim().toLowerCase();
+    const fb = document.getElementById('feedback-4');
+    if (val === correctFinal) {
+      fb.textContent = '✓ El cofre se abre.';
+      fb.className = 'feedback success';
+      document.getElementById('reward-4').classList.add('show');
+      markSolved(4);
+    } else {
+      fb.textContent = '✗ La clave no coincide. Revisa el orden de los ritos.';
+      fb.className = 'feedback error';
+    }
+  }
+</script>
+
+</body>
+</html>
